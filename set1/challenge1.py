@@ -7,7 +7,7 @@ def convert_hx_b64(input_hex):
 
 if __name__ == '__main__':
 
-	with open('1_hex.txt', 'r') as f:
+	with open('data/1.txt', 'r') as f:
 		input_hex = f.read().splitlines()
         
                 

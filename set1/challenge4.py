@@ -4,7 +4,7 @@ from tqdm import tqdm
 
 if __name__ == '__main__':
 
-        with open('4_hex.txt', 'r') as f:
+        with open('data/4.txt', 'r') as f:
                 input_hex = f.read().splitlines()
 
         score = []
@@ -14,6 +14,7 @@ if __name__ == '__main__':
                 prob_char, sc = c3.check_all_chars(cypher)
                 score.append(sc)
                 chars.append(prob_char)
+
 
         index = score.index(max(score))
         

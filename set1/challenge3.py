@@ -3,6 +3,7 @@ import binascii
 import base64
 from freq import frequency
 
+
 def xor_hx_char(s, c):
 
         #take a hex string, xor with an ascii char, give binary
@@ -21,7 +22,7 @@ def score(frequency, string):
 
         score = 0
         for c in string:
-                if c < 10 or c > 128:
+                if c < 10 or c > 128: # only score ascii
                         score += 0
                 else:
                         if chr(c) in frequency:
@@ -50,7 +51,7 @@ def check_all_chars(cypher):
 
 if __name__ == '__main__':
 
-        with open('3_hex.txt', 'r') as f:
+        with open('data/3.txt', 'r') as f:
                 cypher = f.read().strip()
 
         probable_char, _ = check_all_chars(cypher) 

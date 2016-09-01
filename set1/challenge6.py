@@ -3,6 +3,7 @@ import base64
 import challenge3 as c3
 import challenge5 as c5
 
+
 def chunks(string, n):
 
         return [bytes(string[i:i + n]) for i in range(0, len(string), n)]
@@ -10,8 +11,7 @@ def chunks(string, n):
 
 def hamming_dist(x, y):
         
-        return sum([bin(i^j).count("1") for i,j in zip(x,y)])
-
+        return sum([bin(i^j).count("1") for i, j in zip(x, y)])
 
 
 def key_length(cyphertext):
@@ -31,7 +31,7 @@ def get_xor_key(cyphertext, key_len):
 
         blocks = chunks(cyphertext, key_len)
 
-        blocks_t = [bytes(x) for x in list(zip(*blocks[0:-1]))]
+        blocks_t = [bytes(x) for x in list(zip(*blocks[:-1]))]
 
         xor_key = ''      
         for block in blocks_t:
@@ -43,7 +43,7 @@ def get_xor_key(cyphertext, key_len):
 
 if __name__ == '__main__':
 
-        with open('6_hex.txt', 'r') as f:
+        with open('data/6.txt', 'r') as f:
                 cyphertext = base64.b64decode(f.read().strip())
 
          
@@ -52,5 +52,5 @@ if __name__ == '__main__':
         xor_key = get_xor_key(cyphertext, key_len)
         print("The XOR key is '%s'\n" %xor_key)
         
-        cleartext = c5.padded_str_xor(cyphertext, bytes(xor_key, 'ascii'))
-        print("And the cleartext is: \n", cleartext.decode())
+        cleartext = c5.padded_xor(cyphertext, bytes(xor_key, 'ascii'))
+        print("And the cleartext is: \n\n", cleartext.decode())

@@ -11,9 +11,10 @@ def fixed_xor(x, y):
    
 	return bytes(out_bin)
 
+
 if __name__ == '__main__':
 
-        with open('2_hex.txt', 'r') as f:
+        with open('data/2.txt', 'r') as f:
                 input_hex = f.read().splitlines()
 	
         x = bytes.fromhex(input_hex[0])
