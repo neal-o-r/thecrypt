@@ -1,4 +1,4 @@
-from .challenge6 import chunks
+from challenge6 import chunks
 import binascii
 
 def count_duplicates(cyphertext, blocksize):

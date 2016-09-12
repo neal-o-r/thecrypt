@@ -1,7 +1,7 @@
 import binascii
 import base64
-from .challenge3 import check_all_chars
-from .challenge5 import padded_xor
+from challenge3 import check_all_chars
+from challenge5 import padded_xor
 
 
 def chunks(string, n):
