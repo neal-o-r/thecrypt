@@ -1,4 +1,4 @@
-import challenge3 as c3
+from .challenge3 import check_all_chars, xor_hx_char
 from tqdm import tqdm
 
 

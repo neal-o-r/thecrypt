@@ -1,21 +1,24 @@
-import challenge6 as c6
+from .challenge6 import chunks
 import binascii
 
-def duplicate_blocks(cyphertext, blocksize):
+def count_duplicates(cyphertext, blocksize):
+
+	ctext_arr = chunks(cyphertext, blocksize)
+	dup = 0
+	for i, block in enumerate(ctext_arr):
+		if block in ctext_arr[:i] + ctext_arr[i+1:]:
+			dup += 1         
         
-        duplicates = []
-        for ctext in cyphertext:
+	return dup
 
-                ctext_arr = c6.chunks(ctext, blocksize)
-
-                dup = 0
-                for i, block in enumerate(ctext_arr):
-                        if block in ctext_arr[:i] + ctext_arr[i+1:]:
-                                dup += 1         
+def duplicate_blocks(cyphertexts, blocksize):
         
-                duplicates.append(dup)
+	duplicates = []
+	for ctext in cyphertext:
+		duplicates.append(count_duplicates(ctext, blocksize))
+        
+	return duplicates
 
-        return duplicates
 
 if __name__ == '__main__':
 

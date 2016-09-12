@@ -1,7 +1,7 @@
 import binascii
 import base64
-import challenge3 as c3
-import challenge5 as c5
+from .challenge3 import check_all_chars
+from .challenge5 import padded_xor
 
 
 def chunks(string, n):
@@ -36,7 +36,7 @@ def get_xor_key(cyphertext, key_len):
         xor_key = ''      
         for block in blocks_t:
 
-                poss_char, _ = c3.check_all_chars(binascii.hexlify(block).decode())
+                poss_char, _ = check_all_chars(binascii.hexlify(block).decode())
                 xor_key += poss_char                
 
         return xor_key
@@ -52,5 +52,5 @@ if __name__ == '__main__':
         xor_key = get_xor_key(cyphertext, key_len)
         print("The XOR key is '%s'\n" %xor_key)
         
-        cleartext = c5.padded_xor(cyphertext, bytes(xor_key, 'ascii'))
+        cleartext = padded_xor(cyphertext, bytes(xor_key, 'ascii'))
         print("And the cleartext is: \n\n", cleartext.decode())

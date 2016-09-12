@@ -1,7 +1,7 @@
-from challenge2 import fixed_xor
+from .challenge2 import fixed_xor
 import binascii
 import base64
-from freq import frequency
+from .freq import frequency
 
 
 def xor_hx_char(s, c):

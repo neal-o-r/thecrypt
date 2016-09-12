@@ -1,4 +1,4 @@
-from challenge2 import fixed_xor
+from .challenge2 import fixed_xor
 import binascii
 
 def padded_xor(s1, s2):
