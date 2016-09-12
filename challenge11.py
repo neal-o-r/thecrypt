@@ -1,9 +1,8 @@
 from Crypto.Random.random import randrange, getrandbits
 from Crypto.Cipher import AES
-import import_set1
-from set1 import challenge6 as c6
-from set1 import challenge2 as c2
-from set1 import challenge8 as c8
+import challenge6 as c6
+import challenge2 as c2
+import challenge8 as c8
 import challenge9 as c9
 from collections import namedtuple
 from tqdm import tqdm

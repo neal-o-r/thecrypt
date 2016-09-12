@@ -1,8 +1,7 @@
 import base64
 from Crypto.Cipher import AES
-import import_set1
-import set1.challenge6 as c6
-import set1.challenge2 as c2
+import challenge6 as c6
+import challenge2 as c2
 
 
 def decrypt_AES(cyphertext, key, initialization):
