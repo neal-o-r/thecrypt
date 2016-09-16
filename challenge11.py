@@ -49,9 +49,9 @@ def black_box(cleartext):
 		init_vec = bytes(getrandbits(8) for i in range(16))			
 		return OUT(coin_flip, CBC_encrypt(cleartext, key, init_vec))	
 	
-def its_ECB(cyphertext):
+def its_ECB(cyphertext, n = 16):
 
-	return c8.count_duplicates(cyphertext, 16) > 0
+	return c8.count_duplicates(cyphertext, n) > 0
 
 if __name__ == '__main__':
 
