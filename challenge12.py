@@ -2,12 +2,19 @@ import base64
 from Crypto.Random.random import getrandbits
 import challenge11 as c11
 import challenge9  as c9
+import challenge6  as c6
+
 
 key = bytes(getrandbits(8) for i in range(16))
 
-def ECB_oracle(plaintext):
+def ECB_oracle(plaintext = b''):
 
-        plaintext_padded = c9.PKCS7(plaintext, 16)
+        with open('data/12.txt', 'r') as f:
+                unknown_64 = f.read().strip()
+
+        unknown_bytes = base64.b64decode(unknown_64)
+         
+        plaintext_padded = c9.PKCS7(plaintext + unknown_bytes, 16)
         return c11.ECB_encrypt(plaintext_padded, key)
         
 
@@ -21,52 +28,57 @@ def ECB_blocksize(ecb_instance):
                 cypher_len = len(ecb_instance(b'A'*i))
                 i += 1
 
-        return i-1
+        return cypher_len - null_len
 
 
-def get_byte_dict(oracle, n):
+def get_byte_dict(block, oracle, n):
 
-	small_block = b'A' * (n - 1)
+        byte_dict = {}
+        for i in range(256):
 	
-	byte_dict = {}
-	for i in range(127):
-		
-		enc_bytes = oracle(small_block + bytes([i]))
-		byte_dict[enc_bytes[:n]] = bytes([i])
-		
-	return byte_dict
+                s = oracle(block + bytes([i]))
+                parts = c6.chunks(s, n)
+                
+                byte_dict[parts[0]] = bytes([i])
+	        
+        return byte_dict
 
 
-def break_ECB(text, oracle, n):
+def next_byte(block, known, oracle, n):       
+ 
+        byte_dict = get_byte_dict(block, oracle, n)
 
-	byte_dict = get_byte_dict(oracle, n)
+        padding = bytes([0]) * (len(oracle()) - len(known) -1)         
 
-	decoded = b''
-	for i in text:	
-		
-		t = oracle(b'A' * (n-1) + bytes(i, 'ascii'))[:n]
+        enc_block = oracle(padding)
+        dict_match = c6.chunks(enc_block, n)[len(oracle())//n - 1]
+    
+        return byte_dict[dict_match] if (dict_match in byte_dict) else None
 
-		decoded += byte_dict[t]
-	
-	return decoded
+
+def break_ECB(oracle, n):
+        
+        known = b''
+        block = bytes([0]) * (n-1)
+        for i in range(len(ECB_oracle())):
+                
+                out_byte = next_byte(block, known, oracle, n)
+                if out_byte == None: break
+                        
+                block += out_byte  
+                block = block[1:]
+
+                known += out_byte 
+
+        return known
+
 
 if __name__ == '__main__':
 
-        with open('data/12.txt', 'r') as f:
-                unknown_64 = f.read().strip()
-
-        with open('data/vanilla.txt', 'r') as f:
-                your_string = f.read().strip()
-
-        your_string = bytes(your_string, 'ascii')
-        unknown_string = base64.b64decode(unknown_64)
-        
-        text = your_string + unknown_string
-
         block_len = ECB_blocksize(ECB_oracle)
 
-        assert c11.its_ECB(ECB_oracle(text*2)), "it's not ECB"
+        random_bytes = bytes(getrandbits(8) for i in range(block_len))
+        assert c11.its_ECB(ECB_oracle(random_bytes * 4))
 
-        decyphered_text = break_ECB(unknown_64, ECB_oracle, block_len)
-
-        print(base64.b64decode(decyphered_text).decode())
+        decyphered_text = break_ECB(ECB_oracle, block_len)
+        print(decyphered_text.decode())
