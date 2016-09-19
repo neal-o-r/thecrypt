@@ -3,7 +3,7 @@ from Crypto.Random.random import getrandbits
 import challenge11 as c11
 import challenge9  as c9
 import challenge6  as c6
-
+from tqdm import tqdm
 
 key = bytes(getrandbits(8) for i in range(16))
 
@@ -60,7 +60,7 @@ def break_ECB(oracle, n):
         
         known = b''
         block = bytes([0]) * (n-1)
-        for i in range(len(ECB_oracle())):
+        for i in tqdm(range(len(ECB_oracle()))):
                 
                 out_byte = next_byte(block, known, oracle, n)
                 if out_byte == None: break
