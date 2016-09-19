@@ -4,17 +4,14 @@ import binascii
 def count_duplicates(cyphertext, blocksize):
 
 	ctext_arr = chunks(cyphertext, blocksize)
-	dup = 0
-	for i, block in enumerate(ctext_arr):
-		if block in ctext_arr[:i] + ctext_arr[i+1:]:
-			dup += 1         
-        
+	dup = len(ctext_arr) - len(set(ctext_arr))        
+
 	return dup
 
 def duplicate_blocks(cyphertexts, blocksize):
         
 	duplicates = []
-	for ctext in cyphertext:
+	for ctext in cyphertexts:
 		duplicates.append(count_duplicates(ctext, blocksize))
         
 	return duplicates
