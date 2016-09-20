@@ -8,6 +8,14 @@ def PKCS7(input_bytes, size):
 
 	return padded
 
+
+def unPKCS7(plaintext):
+
+        plaintext = plaintext[:len(plaintext) - plaintext[-1]]
+
+        return plaintext
+
+
 if __name__ == '__main__':
 
 	str_to_pad = 'YELLOW SUBMARINE'
