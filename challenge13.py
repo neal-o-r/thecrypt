@@ -4,7 +4,7 @@ from Crypto.Random.random import getrandbits
 from Crypto.Cipher import AES
 import challenge6 as c6
 
-key = bytes([0]*16)
+key = bytes(getrandbits(8) for i in range(16))
 
 def keqv_parse(input_string):
 
