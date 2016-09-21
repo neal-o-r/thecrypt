@@ -6,8 +6,8 @@ import challenge12 as c12
 import challenge6  as c6
 from tqdm import tqdm
 
-key = bytes(getrandbits(8) for i in range(16))
-pre = bytes(getrandbits(8) for i in range(randint(1, 16)))
+key = c12.randbytes(16)
+pre = c12.randbytes(randint(1, 16))
 
 def ECB_oracle(plaintext = b''):
 

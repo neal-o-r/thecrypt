@@ -1,10 +1,11 @@
 import challenge11 as c11
 import challenge9  as c9
+import challenge12 as c12
 from Crypto.Random.random import getrandbits
 from Crypto.Cipher import AES
 import challenge6 as c6
 
-key = bytes(getrandbits(8) for i in range(16))
+key = c12.randbytes(16)
 
 def keqv_parse(input_string):
 
