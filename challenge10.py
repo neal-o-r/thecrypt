@@ -4,7 +4,7 @@ import challenge6 as c6
 import challenge2 as c2
 
 
-def decrypt_AES(cyphertext, key, initialization):
+def CBC_decrypt(cyphertext, key, initialization):
 
 	blocks = c6.chunks(cyphertext, len(key))
 	aes_cypher = AES.new(key, AES.MODE_ECB)
@@ -31,7 +31,7 @@ if __name__ == '__main__':
 	key = bytes("YELLOW SUBMARINE", 'ascii')
 	init_vec = bytes([0] * len(key))
 	
-	decrypted = decrypt_AES(cyphertext, key, init_vec)
+	decrypted = CBC_decrypt(cyphertext, key, init_vec)
 	
 	text = decrypted.decode()
 	print(text)	
