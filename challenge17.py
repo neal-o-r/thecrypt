@@ -14,7 +14,7 @@ with open('data/17.txt', 'r') as f:
         text = f.read().split('\n')
 
 plaintext = base64.b64decode(rd.choice(text[:-1]))
-
+plaintext = bytes(range(40))
 
 def encrypt(plaintext):
 
