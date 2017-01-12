@@ -5,7 +5,7 @@ import challenge6 as c6
 import challenge2 as c2
 
 
-def AES_CTR(cyphertext, key, mode='enc'):
+def AES_CTR(cyphertext, key, nonce=0, mode='enc'):
 	
 	n = len(key)
 
@@ -15,7 +15,9 @@ def AES_CTR(cyphertext, key, mode='enc'):
 	out = b''
 	ctr = 0
 	for block in blocks:
-		keystream = bytes([0]*(n//2) + [ctr] + [0]*(n//2 - 1))	
+
+		keystream = bytes(
+			[nonce] + [0]*(n//2-1) + [ctr] + [0]*(n//2 - 1))	
 		ctr += 1
 	
 		if mode == 'enc':
