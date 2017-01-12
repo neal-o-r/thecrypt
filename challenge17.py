@@ -7,6 +7,7 @@ import challenge15 as c15
 import base64
 import random as rd
 
+plain_test = b"IRISHMAN AND IRISHWOMEN: In the name of God and of the dead generations from which she receives her old tradition of nationhood, Ireland, through us, summons her children to her flag and strikes for her freedom" 
 
 key = c12.randbytes(16)
 iv  = c12.randbytes(16)
@@ -15,7 +16,6 @@ with open('data/17.txt', 'r') as f:
         text = f.read().split('\n')
 
 plaintext = base64.b64decode(rd.choice(text[:-1]))
-#plaintext = bytes(range(40))
 
 def encrypt(plaintext):
 
@@ -71,23 +71,24 @@ def break_blocks(c1, c2, oracle, n):
 
 def break_CBC(cyphertext, oracle, n):
 
-        blocks = c6.chunks(cyphertext, n)
+	blocks = c6.chunks(cyphertext, n)
         
-        ans = []
-        for i in range(len(blocks)-2):
-                c1 = blocks[i]
-                c2 = blocks[i+1]
-                a = break_blocks(c1, c2, oracle, n)
-                ans.append(a)
+	ans = ''
+	for i in range(len(blocks)-1):
+		c1 = blocks[i]
+		c2 = blocks[i+1]
+		a = break_blocks(c1, c2, oracle, n)
+       		         
+		ans += ''.join([i.decode() for i in a[::-1]])
         
-        return ans
+	return ans
 
 
 if __name__ == '__main__':
 
         n = len(key)
 
-        cyphertext = encrypt(plaintext)
+        cyphertext = encrypt(plain_test)
         
         decyphered = break_CBC(cyphertext, padding_oracle, n)
  
