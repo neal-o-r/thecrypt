@@ -65,12 +65,12 @@ def break_CBC(cyphertext, oracle, n):
 
         known = []
         found = []
-        for i in range(2):
+        for i in range(1):
                 p, f = break_byte(c2, c1, found, n-i, n)
                 known.append(p)
                 found.append(f)
 
-        return known        
+        return known, found      
         
 
 if __name__ == '__main__':
@@ -79,6 +79,6 @@ if __name__ == '__main__':
 
         cyphertext = encrypt(plaintext)
         
-        decyphered = break_CBC(cyphertext, padding_oracle, n)
+        decyphered, found = break_CBC(cyphertext, padding_oracle, n)
         #print(decyphered == bytes([plaintext[2*n-1]])) 
  
