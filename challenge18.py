@@ -16,8 +16,7 @@ def AES_CTR(cyphertext, key, nonce=0, mode='enc'):
 	ctr = 0
 	for block in blocks:
 
-		keystream = bytes(
-			[nonce] + [0]*(n//2-1) + [ctr] + [0]*(n//2 - 1))	
+		keystream = pack('<QQ', nonce, ctr)	
 		ctr += 1
 	
 		if mode == 'enc':

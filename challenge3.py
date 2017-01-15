@@ -4,31 +4,23 @@ import base64
 from freq import frequency
 
 
-def xor_hx_char(s, c):
+def xor_char(s, c):
 
-        #take a hex string, xor with an ascii char, give binary
+	pad_c = c*len(s)
 
-        bin_s = bytes.fromhex(s)     
-        bin_c = bytes(c, 'ascii')
+	xor = fixed_xor(s, pad_c)
 
-        pad_c = bin_c*len(bin_s)
-        
-        xor = fixed_xor(bin_s, pad_c)
-
-        return xor
+	return xor
 
 
 def score(frequency, string):
 
-        score = 0
-        for c in string:
-                if c < 10 or c > 128: # only score ascii
-                        score += 0
-                else:
-                        if chr(c) in frequency:
-                                score += frequency[chr(c).lower()]
+	score = 0
+	for c in string:
+		if c > 10 and c < 127 and chr(c) in frequency:
+			score += frequency[chr(c).lower()]
 
-        return score
+	return score
 
         
 def check_all_chars(cypher):
@@ -38,12 +30,12 @@ def check_all_chars(cypher):
 
         for i in range(0, 127):
 
-                c = chr(i)        
+                byte_c = bytes([i])
                         
-                xord = xor_hx_char(cypher, c)
+                xord = xor_char(cypher, byte_c)
                 
                 if score(frequency, xord) > top_score:
-                        top_char = c
+                        top_char = chr(i)
                         top_score = score(frequency, xord)
 
         return top_char, top_score
@@ -52,11 +44,11 @@ def check_all_chars(cypher):
 if __name__ == '__main__':
 
         with open('data/3.txt', 'r') as f:
-                cypher = f.read().strip()
-
+                cypher = bytes.fromhex(f.read().strip())
+	
         probable_char, _ = check_all_chars(cypher) 
-        decyphered = xor_hx_char(cypher, probable_char).decode('ascii')
+        decyphered = xor_char(cypher, 
+			bytes(probable_char, 'ascii')).decode('ascii')
 
         print("The most probable XOR character is '%s'\n"%probable_char+
                 'and the sentence is \n %s' %decyphered)
- 
