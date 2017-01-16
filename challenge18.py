@@ -5,7 +5,7 @@ import challenge6 as c6
 import challenge2 as c2
 
 
-def AES_CTR(cyphertext, key, nonce=0, mode='enc'):
+def AES_CTR(cyphertext, key, nonce=0):
 	
 	n = len(key)
 
@@ -19,13 +19,9 @@ def AES_CTR(cyphertext, key, nonce=0, mode='enc'):
 		keystream = pack('<QQ', nonce, ctr)	
 		ctr += 1
 	
-		if mode == 'enc':
-			out += c2.fixed_xor(
+		out += c2.fixed_xor(
 				aes_cypher.encrypt(keystream), block)
 
-		if mode == 'dec': 
-			out += c2.fixed_xor(
-				aes_cypher.decrypt(keystream), block)
 
 	return out
 
@@ -37,4 +33,4 @@ if __name__ == '__main__':
 
 	key = b'YELLOW SUBMARINE'
 	
-	plaintext = AES_CTR(cyphertext, key, mode='enc')
+	plaintext = AES_CTR(cyphertext, key)
