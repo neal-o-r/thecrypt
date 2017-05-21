@@ -7,7 +7,7 @@ def fixed_xor(x, y):
 	out_bin = bytearray()
 	for i, j in zip(x, y):
 	    
-    		out_bin.append( i ^ j)
+    		out_bin.append(i ^ j)
    
 	return bytes(out_bin)
 

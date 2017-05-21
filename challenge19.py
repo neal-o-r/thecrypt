@@ -29,6 +29,8 @@ def get_keystream(cyphers):
 
 	return keystream
 
+
+
 if __name__ == '__main__':
 
 	with open('data/19.txt', 'r') as f:
