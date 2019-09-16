@@ -6,33 +6,31 @@ import challenge2 as c2
 
 def CBC_decrypt(cyphertext, key, initialization):
 
-	blocks = c6.chunks(cyphertext, len(key))
-	aes_cypher = AES.new(key, AES.MODE_ECB)
+    blocks = c6.chunks(cyphertext, len(key))
+    aes_cypher = AES.new(key, AES.MODE_ECB)
+
+    vec = initialization
+    cleartext = b""
+    for block in blocks:
+
+        decrypt = aes_cypher.decrypt(block)
+        cleartext += c2.fixed_xor(decrypt, vec)
+        vec = block
+
+    return cleartext
 
 
-	vec = initialization
-	cleartext = b''
-	for block in blocks:
+if __name__ == "__main__":
 
-		decrypt = aes_cypher.decrypt(block)
-		cleartext += c2.fixed_xor(decrypt, vec)
-		vec = block
+    with open("data/10.txt", "r") as f:
+        cyphertext = f.read().strip()
 
-	return cleartext
+    cyphertext = base64.b64decode(cyphertext)
 
+    key = bytes("YELLOW SUBMARINE", "ascii")
+    init_vec = bytes([0] * len(key))
 
-if __name__ == '__main__':
+    decrypted = CBC_decrypt(cyphertext, key, init_vec)
 
-	with open('data/10.txt', 'r') as f:
-		cyphertext = f.read().strip()
-
-	cyphertext = base64.b64decode(cyphertext)
-
-	key = bytes("YELLOW SUBMARINE", 'ascii')
-	init_vec = bytes([0] * len(key))
-	
-	decrypted = CBC_decrypt(cyphertext, key, init_vec)
-	
-	text = decrypted.decode()
-	print(text)	
-
+    text = decrypted.decode()
+    print(text)
