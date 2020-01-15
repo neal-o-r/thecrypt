@@ -1,8 +1,6 @@
-import binascii
 
-
-def fixed_xor(x, y):
-    return bytes([i ^ j for i, j in zip(x, y)])
+def fixed_xor(x: bytes, y: bytes) -> bytes:
+    return bytes(i ^ j for i, j in zip(x, y))
 
 
 if __name__ == "__main__":
@@ -15,5 +13,5 @@ if __name__ == "__main__":
 
     z = input_hex[2]
 
-    xy_bytes = fixed_xor(x, y)
-    assert binascii.hexlify(xy_bytes).decode() == z
+    xy= fixed_xor(x, y)
+    assert xy.hex() == z

@@ -1,4 +1,6 @@
-frequency = {
+from collections import defaultdict
+frequency = defaultdict(int,
+{
     "a": 0.0651738,
     "b": 0.0124248,
     "c": 0.0217339,
@@ -26,4 +28,4 @@ frequency = {
     "y": 0.0145984,
     "z": 0.0007836,
     " ": 0.1918182,
-}
+})
