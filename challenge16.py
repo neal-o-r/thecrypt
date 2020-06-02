@@ -3,24 +3,20 @@ import challenge10 as c10
 import challenge11 as c11
 import challenge12 as c12
 
-
 key = c12.randbytes(16)
 iv = c12.randbytes(16)
 
 
-def CBC_encrypt_string(input_string):
-
-    pre = b"comment1=cooking%20MCs;userdata="
-    post = b";comment2=%20like%20a%20pound%20of%20bacon"
+def CBC_encrypt_string(input_string: str) -> bytes:
+    pre = "comment1=cooking%20MCs;userdata="
+    post = ";comment2=%20like%20a%20pound%20of%20bacon"
 
     input_string = input_string.replace(";", "").replace("=", "")
-    plaintext = c9.PKCS7(pre + bytes(input_string, "ascii") + post, len(key))
-
+    plaintext = c9.PKCS7(bytes(pre + input_string + post, "ascii"), len(key))
     return c11.CBC_encrypt(plaintext, key, iv)
 
 
-def check(cyphertext):
-
+def check(cyphertext: bytes) -> bool:
     plaintext = c10.CBC_decrypt(cyphertext, key, iv)
     plaintext = plaintext.decode(errors="replace")
 

@@ -1,18 +1,18 @@
 class MT19937:
 
     u = 11
-    s, b = 7, 0x9d2c5680
-    t, c = 15, 0xefc60000
+    s, b = 7, 0x9D2C5680
+    t, c = 15, 0xEFC60000
     l = 18
 
     def __init__(self, seed):
         self.index = 624
         self.state = [0] * 624
-        self.state[0] = seed & 0xffffffff
+        self.state[0] = seed & 0xFFFFFFFF
         for i in range(1, 624):
             self.state[i] = (
-                0x6c078965 * (self.state[i - 1] ^ self.state[i - 1] >> 30) + i
-                & 0xffffffff
+                0x6C078965 * (self.state[i - 1] ^ self.state[i - 1] >> 30) + i
+                & 0xFFFFFFFF
             )
 
     @staticmethod
@@ -32,10 +32,10 @@ class MT19937:
 
     def __twist(self):
         for i in range(624):
-            y = (self.state[i] & 0x80000000) + (self.state[(i + 1) % 624] & 0x7fffffff)
+            y = (self.state[i] & 0x80000000) + (self.state[(i + 1) % 624] & 0x7FFFFFFF)
             self.state[i] = self.state[(i + 397) % 624] ^ y >> 1
             if y % 2 != 0:
-                self.state[i] ^= 0x9908b0df
+                self.state[i] ^= 0x9908B0DF
         self.index = 0
 
 

@@ -1,4 +1,3 @@
-
 def fixed_xor(x: bytes, y: bytes) -> bytes:
     return bytes(i ^ j for i, j in zip(x, y))
 
@@ -13,5 +12,5 @@ if __name__ == "__main__":
 
     z = input_hex[2]
 
-    xy= fixed_xor(x, y)
+    xy = fixed_xor(x, y)
     assert xy.hex() == z

@@ -8,74 +8,47 @@ import challenge6 as c6
 key = c12.randbytes(16)
 
 
-def keqv_parse(input_string):
-
-    bits = input_string.split("&")
-
-    dict_obj = {}
-    for bit in bits:
-        referent = bit.split("=")[0]
-        referrer = bit.split("=")[1]
-
-        dict_obj[referent] = referrer
-
-    return dict_obj
+def keqv_parse(input_string: str) -> dict:
+    split = lambda s: s.split("=")
+    return {x: y for x, y in map(split, input_string.split("&"))}
 
 
-def decon_struct(dict_obj):
-
-    as_string = "&".join(
-        [key + "=" + str(dict_obj[key]) for key in ["email", "uid", "role"]]
-    )
-
-    return as_string
+def decon_struct(dict_obj: dict) -> str:
+    return "&".join(f"{key}={val}" for key, val in dict_obj.items())
 
 
-def profile_for(email):
-
-    email = email.split("&")[0].split("=")[0]
-
+def profile_for(email: str) -> str:
+    email = email.replace("&", "").replace("=", "")
     assert "@" and "." in email, "this isn't an email address"
 
     profile = {"email": email, "uid": 10, "role": "user"}
-
     return decon_struct(profile)
 
 
-def oracle(email):
-
+def oracle(email: str) -> bytes:
     profile = profile_for(email)
     padded = c9.PKCS7(bytes(profile, "ascii"), len(key))
-
     return c11.ECB_encrypt(padded, key)
 
 
-def decrypt(cyphertext):
-
+def decrypt(cyphertext: bytes) -> str:
     cypher = AES.new(key, AES.MODE_ECB)
     profile = c9.unPKCS7(cypher.decrypt(cyphertext))
-
     return profile.decode()
 
 
-def make_fake_cookie():
-
+def make_fake_cookie() -> str:
     fake_email = "AAAA@AAAA.AAA"
-
     admin_block = c9.PKCS7(b"admin", 16).decode()
-    cypher_cookie = oracle(fake_email[:-3] + admin_block + fake_email[-3:])
-
-    print(decrypt(cypher_cookie))
+    cypher_cookie = oracle(
+        fake_email.split(".")[0] + admin_block + fake_email.split(".")[-1]
+    )
 
     elements = c6.chunks(cypher_cookie, 16)
-
-    fake_cookie = elements[0] + elements[2] + elements[1]  # + elements[3]
-
+    fake_cookie = elements[0] + elements[2] + elements[1]
     return decrypt(fake_cookie)
 
 
 if __name__ == "__main__":
-
     fake = make_fake_cookie()
-
     print(fake)

@@ -4,7 +4,7 @@ import challenge6 as c6
 import challenge2 as c2
 
 
-def CBC_decrypt(cyphertext, key, initialization):
+def CBC_decrypt(cyphertext: bytes, key: bytes, initialization: bytes) -> bytes:
 
     blocks = c6.chunks(cyphertext, len(key))
     aes_cypher = AES.new(key, AES.MODE_ECB)
@@ -12,7 +12,6 @@ def CBC_decrypt(cyphertext, key, initialization):
     vec = initialization
     cleartext = b""
     for block in blocks:
-
         decrypt = aes_cypher.decrypt(block)
         cleartext += c2.fixed_xor(decrypt, vec)
         vec = block
@@ -32,5 +31,4 @@ if __name__ == "__main__":
 
     decrypted = CBC_decrypt(cyphertext, key, init_vec)
 
-    text = decrypted.decode()
-    print(text)
+    print(decrypted.decode())

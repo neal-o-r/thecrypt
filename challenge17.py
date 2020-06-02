@@ -7,10 +7,10 @@ import challenge15 as c15
 import base64
 import random as rd
 
-plain_test = b"IRISHMAN AND IRISHWOMEN: In the name of God and of the dead generations from which she receives her old tradition of nationhood, Ireland, through us, summons her children to her flag and strikes for her freedom"
+plaintest = b"IRISHMAN AND IRISHWOMEN: In the name of God and of the dead generations from which she receives her old tradition of nationhood, Ireland, through us, summons her children to her flag and strikes for her freedom"
 
-key = c12.randbytes(16)
-iv = c12.randbytes(16)
+KEY = c12.randbytes(16)
+IV = c12.randbytes(16)
 
 with open("data/17.txt", "r") as f:
     text = f.read().split("\n")
@@ -18,37 +18,26 @@ with open("data/17.txt", "r") as f:
 plaintext = base64.b64decode(rd.choice(text[:-1]))
 
 
-def encrypt(plaintext):
-
+def encrypt(plaintext: str) -> bytes:
     plaintext = c9.PKCS7(bytes(plaintext), len(key))
-
     return c11.CBC_encrypt(plaintext, key, iv)
 
 
-def padding_oracle(cyphertext):
-
+def padding_oracle(cyphertext: bytes) -> bool:
     plaintext = c10.CBC_decrypt(cyphertext, key, iv)
-
     return c15.is_PKCS7(plaintext)
 
 
-def break_byte(block, prev_block, found, n_byte, n):
-
-    c1_pre = bytes([0] * (n_byte - 1))
+def break_byte(block: bytes, prev_block: bytes, found: bytes, n_byte, n):
 
     pad_byte = (n - n_byte) + 1
 
-    c1_post = []
-
-    for i, f in enumerate(found[::-1]):
-        c1_post.append(pad_byte ^ f ^ (len(found) - i))
-
-    c1_post = bytes(c1_post)
+    c1_pre = bytes([0] * (n_byte - 1))
+    c1_post = bytes([pad_byte ^ f ^ (len(found) - i)
+            for i, f in enumerate(found[::-1])])
 
     for i in range(256):
-
         c1_dash = c1_pre + bytes([i]) + c1_post
-
         if padding_oracle(c1_dash + block):
             found_byte = i
 
@@ -86,7 +75,6 @@ def break_CBC(cyphertext, oracle, n):
 
 
 if __name__ == "__main__":
-
     n = len(key)
 
     cyphertext = encrypt(plain_test)

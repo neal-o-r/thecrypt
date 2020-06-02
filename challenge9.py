@@ -1,21 +1,16 @@
-def PKCS7(input_bytes, size):
+def PKCS7(input_bytes: bytes, size: int) -> bytes:
 
     n_pad = size - len(input_bytes) % size
 
-    padded = input_bytes + n_pad * bytes([n_pad])
-
-    return padded
+    return input_bytes + n_pad * bytes([n_pad])
 
 
-def unPKCS7(plaintext):
-
-    plaintext = plaintext[: len(plaintext) - plaintext[-1]]
-
-    return plaintext
+def unPKCS7(input_bytes: bytes) -> bytes:
+    return input_bytes[: (len(input_bytes) - input_bytes[-1])]
 
 
 if __name__ == "__main__":
 
-    str_to_pad = "YELLOW SUBMARINE"
+    to_pad = b"YELLOW SUBMARINE"
 
-    print(PKCS7(bytes(str_to_pad, "ascii"), 20))
+    print(PKCS7(to_pad, 20))

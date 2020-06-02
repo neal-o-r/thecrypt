@@ -1,4 +1,4 @@
-#https://cryptopals.com/sets/1/challenges/1
+# https://cryptopals.com/sets/1/challenges/1
 import base64
 
 
